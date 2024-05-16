@@ -3,3 +3,83 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+armies:
+    path: /armies
+    controller: App\Controller\EjercitoController::armies_list
+    methods: ['GET']
+
+army:
+    path: /armies/{raza}
+    controller: App\Controller\EjercitoController::seek_army
+    methods: ['GET']
+
+
+anadir:
+    path: /armies
+    controller: App\Controller\EjercitoController::add_army
+    methods: ['POST']
+
+borrar:
+    path: /armies/{raza}
+    controller: App\Controller\EjercitoController::delete_army
+    methods: ['DELETE']
+
+
+editar:
+    path: /armies/{id}
+    controller: App\Controller\EjercitoController::modify_army
+    methods: ['PUT']
+    requirements: 
+        id: \d+
+
+rules:
+    path: /rules
+    controller: App\Controller\ReglasController::rules_list
+    methods: ['GET']
+
+mostrarRegla:
+    path: /rules/{nombre}
+    controller: App\Controller\ReglasController::seek_rule
+    methods: ['GET']
+
+anadirRegla:
+    path: /rules
+    controller: App\Controller\ReglasController::add_rule
+    methods: ['POST']
+
+borrarRegla:
+    path: /rules/{nombre}
+    controller: App\Controller\ReglasController::delete_rule
+    methods: ['DELETE']
+
+editarRegla:
+    path: /rules/{id}
+    controller: App\Controller\ReglasController::modify_rule
+    methods: ['PUT']
+    requirements: 
+        id: \d+
+
+mostrarAtributos:
+    path: /attribute
+    controller: App\Controller\AtributosController::attribute_list
+    methods: ['GET']
+
+
+anadirAtributos:
+    path: /attribute/{id}
+    controller: App\Controller\AtributosController::add_attribute
+    methods: ['POST']
+
+
+borrarAtributos:
+    path: /attribute/{id}
+    controller: App\Controller\AttributosController::delete_attributes
+    methods: ['DELETE']
+
+editarAtributos:
+    path: /attribute/{id}
+    controller: App\Controller\AtributosController::modify_attributes
+    methods: ['PUT']
+    requirements: 
+        id: \d+
