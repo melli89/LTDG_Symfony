@@ -1,5 +1,5 @@
 <?php
-/*namespace App\Controller;
+namespace App\Controller;
 
 use App\Entity\Atributos;
 use App\Entity\Unidades;
@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AtributosController extends AbstractController{
+}
 
     /**
      * @Route("/", methods={"GET"}, name="mostrarAtributos")
