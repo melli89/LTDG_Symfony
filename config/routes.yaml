@@ -83,3 +83,60 @@ editarAtributos:
     methods: ['PUT']
     requirements: 
         id: \d+
+
+mostrarUsuarios:
+    path: /users
+    controller: App\Controller\UsersController::users_display
+    methods: ['GET']
+
+mostrarUsuario:
+    path: /users/{email}
+    controller: App\Controller\UserController::seek_user
+    methods: ['GET']
+
+
+anadirUsuario:
+    path: /users
+    controller: App\Controller\UserController::add_user
+    methods: ['POST']
+
+loginUsuario:
+    path: /login
+    controller: App\Controller\UserController::logIn
+    methods: ['POST']
+
+borrarUsuario:
+    path: /users/{email}
+    controller: App\Controller\UserController::delete_user
+    methods: ['DELETE']
+
+
+editarUsuario:
+    path: /users/{email}
+    controller: App\Controller\UserController::modify_user
+    methods: ['PUT']
+
+mostrarUnidades:
+    path: /units
+    controller: App\Controller\UnidadesController::units_list
+    methods: ['GET']
+
+mostrarCG:
+    path: /units/{id}/cg
+    controller: App\Controller\UnidadesController::get_heroes
+    methods: ['GET']
+
+mostrarBasicas:
+    path: /units/{id}/basica
+    controller: App\Controller\UnidadesController::get_basics
+    methods: ['GET']
+
+mostrarEspeciales:
+    path: /units/{id}/specials
+    controller: App\Controller\UnidadesController::get_especials
+    methods: ['GET']
+
+mostrarSingulares:
+    path: /units/{id}/rare
+    controller: App\Controller\UnidadesController::get_rares
+    methods: ['GET']

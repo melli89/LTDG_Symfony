@@ -28,6 +28,15 @@ class Mejoras
     #[ORM\ManyToMany(targetEntity: Unidades::class)]
     private Collection $equipamientoUnidad;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $rango = null;
+
+    #[ORM\Column(length: 30, nullable: true)]
+    private ?string $fuerza = null;
+
+    #[ORM\Column(length: 30, nullable: true)]
+    private ?string $penetracion = null;
+
 
     public function __construct()
     {
@@ -85,6 +94,42 @@ class Mejoras
     public function removeEquipamientoUnidad(unidades $equipamientoUnidad): static
     {
         $this->equipamientoUnidad->removeElement($equipamientoUnidad);
+
+        return $this;
+    }
+
+    public function getRango(): ?string
+    {
+        return $this->rango;
+    }
+
+    public function setRango(?string $rango): static
+    {
+        $this->rango = $rango;
+
+        return $this;
+    }
+
+    public function getFuerza(): ?string
+    {
+        return $this->fuerza;
+    }
+
+    public function setFuerza(?string $fuerza): static
+    {
+        $this->fuerza = $fuerza;
+
+        return $this;
+    }
+
+    public function getPenetracion(): ?string
+    {
+        return $this->penetracion;
+    }
+
+    public function setPenetracion(?string $penetracion): static
+    {
+        $this->penetracion = $penetracion;
 
         return $this;
     }

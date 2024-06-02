@@ -36,7 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, listas>
      */
-    #[ORM\OneToMany(targetEntity: listas::class, mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: Listas::class, mappedBy: 'user')]
     private Collection $listas;
 
     public function __construct()
@@ -127,7 +127,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->listas;
     }
 
-    public function addLista(listas $lista): static
+    public function addLista(Listas $lista): static
     {
         if (!$this->listas->contains($lista)) {
             $this->listas->add($lista);
@@ -137,7 +137,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeLista(listas $lista): static
+    public function removeLista(Listas $lista): static
     {
         if ($this->listas->removeElement($lista)) {
             // set the owning side to null (unless already changed)

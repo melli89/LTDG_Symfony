@@ -26,10 +26,15 @@ class EjercitoController extends AbstractController{
                 $armies[] = [
                     'id' => $army -> getId(),
                     'raza' => $army -> getRaza(),
-                ];
+                    'imagen' => $this->createImg($army -> getImagen())
+                ]; 
             }
         }
         return new JsonResponse($armies, Response::HTTP_OK);
+    }
+
+    private function createImg($armieImg): string{
+        return 'data:image/jpeg;base64,'.base64_encode(stream_get_contents($armieImg));
     }
 
     public function seek_army (EntityManagerInterface $manager, $raza):Response{
@@ -42,6 +47,7 @@ class EjercitoController extends AbstractController{
         $army = [
             'id' => $show_army -> getId(),
             'raza' => $show_army -> getRaza(),
+            'imagen' => $show_army -> getImagen()
         ];
         return new JsonResponse($army, Response::HTTP_OK);
     }
