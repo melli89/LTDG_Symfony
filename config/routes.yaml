@@ -140,3 +140,18 @@ mostrarSingulares:
     path: /units/{id}/rare
     controller: App\Controller\UnidadesController::get_rares
     methods: ['GET']
+
+obtenerCampeon:
+    path: /champions/{id_unidad}
+    controller: App\Controller\CampeonController::get_champion
+    methods: ['GET']
+
+ObtenerMejorasUnidad:
+    path: /upgrades/{unitId}
+    controller: App\Controller\MejorasController::get_upgradesUnit
+    methods: ['GET']
+
+ObtenerMejorasGratuitas:
+    path: /upgrades/{unitId}/free
+    controller: App\Controller\MejorasController::getHandWeapon
+    methods: ['GET']

@@ -15,11 +15,11 @@ class UnidadesYMejoras
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?unidades $id_unidad = null;
+    private ?Unidades $id_unidad = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?mejoras $idmejora = null;
+    private ?Mejoras $idmejora = null;
 
     #[ORM\Column]
     private ?int $puntos = null;
@@ -29,24 +29,24 @@ class UnidadesYMejoras
         return $this->id;
     }
 
-    public function getIdUnidad(): ?unidades
+    public function getIdUnidad(): ?Unidades
     {
         return $this->id_unidad;
     }
 
-    public function setIdUnidad(?unidades $id_unidad): static
+    public function setIdUnidad(?Unidades $id_unidad): static
     {
         $this->id_unidad = $id_unidad;
 
         return $this;
     }
 
-    public function getIdmejora(): ?mejoras
+    public function getIdmejora(): ?Mejoras
     {
         return $this->idmejora;
     }
 
-    public function setIdmejora(?mejoras $idmejora): static
+    public function setIdmejora(?Mejoras $idmejora): static
     {
         $this->idmejora = $idmejora;
 

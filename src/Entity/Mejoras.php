@@ -82,7 +82,7 @@ class Mejoras
         return $this->equipamientoUnidad;
     }
 
-    public function addEquipamientoUnidad(unidades $equipamientoUnidad): static
+    public function addEquipamientoUnidad(Unidades $equipamientoUnidad): static
     {
         if (!$this->equipamientoUnidad->contains($equipamientoUnidad)) {
             $this->equipamientoUnidad->add($equipamientoUnidad);
@@ -91,7 +91,7 @@ class Mejoras
         return $this;
     }
 
-    public function removeEquipamientoUnidad(unidades $equipamientoUnidad): static
+    public function removeEquipamientoUnidad(Unidades $equipamientoUnidad): static
     {
         $this->equipamientoUnidad->removeElement($equipamientoUnidad);
 

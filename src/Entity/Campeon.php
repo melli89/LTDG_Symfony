@@ -27,7 +27,7 @@ class Campeon
     /**
      * @var Collection<int, objetosmagicos>
      */
-    #[ORM\ManyToMany(targetEntity: Objetosmagicos::class)]
+    #[ORM\ManyToMany(targetEntity: ObjetosMagicos::class)]
     private Collection $objetosCampeon;
 
     #[ORM\Column(length: 100)]
@@ -88,7 +88,7 @@ class Campeon
         return $this->objetosCampeon;
     }
 
-    public function addObjetosCampeon(Objetosmagicos $objetosCampeon): static
+    public function addObjetosCampeon(ObjetosMagicos $objetosCampeon): static
     {
         if (!$this->objetosCampeon->contains($objetosCampeon)) {
             $this->objetosCampeon->add($objetosCampeon);
@@ -97,7 +97,7 @@ class Campeon
         return $this;
     }
 
-    public function removeObjetosCampeon(Objetosmagicos $objetosCampeon): static
+    public function removeObjetosCampeon(ObjetosMagicos $objetosCampeon): static
     {
         $this->objetosCampeon->removeElement($objetosCampeon);
 

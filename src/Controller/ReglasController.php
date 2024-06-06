@@ -122,5 +122,21 @@ class ReglasController extends AbstractController{
         $manager->flush();
         return new Response('', Response::HTTP_OK);
     }
+
+    public function getRules_fromUnit(EntityManagerInterface $manager, $id):response{
+        $rules_list = $manager ->getRepository(ReglasEspeciales::class) -> findBy(['' => 'Singular']);
+        $rules = [];
+
+        if(count($rules_list)>0){
+            foreach ($rules_list as $rule){
+                $rules[] = [
+                    'id' => $rule -> getId(),
+                    'nombre' => $rule -> getNombre(),
+                    'descripcion' => $rule -> getDescripcion()
+                ];
+            }
+        }
+        return new JsonResponse($rules, Response::HTTP_OK);
+    }
 }
 ?>
