@@ -10,7 +10,7 @@ armies:
     methods: ['GET']
 
 army:
-    path: /armies/{raza}
+    path: /armies/{id}
     controller: App\Controller\EjercitoController::seek_army
     methods: ['GET']
 
@@ -86,11 +86,11 @@ editarAtributos:
 
 mostrarUsuarios:
     path: /users
-    controller: App\Controller\UsersController::users_display
+    controller: App\Controller\UserController::users_display
     methods: ['GET']
 
 mostrarUsuario:
-    path: /users/{email}
+    path: /users/{id}
     controller: App\Controller\UserController::seek_user
     methods: ['GET']
 
@@ -106,13 +106,13 @@ loginUsuario:
     methods: ['POST']
 
 borrarUsuario:
-    path: /users/{email}
+    path: /users/{id}
     controller: App\Controller\UserController::delete_user
     methods: ['DELETE']
 
 
 editarUsuario:
-    path: /users/{email}
+    path: /users/{id}
     controller: App\Controller\UserController::modify_user
     methods: ['PUT']
 
@@ -155,3 +155,33 @@ ObtenerMejorasGratuitas:
     path: /upgrades/{unitId}/free
     controller: App\Controller\MejorasController::getHandWeapon
     methods: ['GET']
+
+ObtenerListas:
+    path: /listas
+    controller: App\Controller\ListasController::getListas
+    methods: ['GET']
+
+ObtenerLista:
+    path: /listas/{id}
+    controller: App\Controller\ListasController::seek_list
+    methods: ['GET']
+
+ObtenerListaUsuario:
+    path: /listas/user/{userId}
+    controller: App\Controller\ListasController::seek_user_list
+    methods: ['GET']
+
+AddLista:
+    path: /listas
+    controller: App\Controller\ListasController::add_list
+    methods: ['POST']
+
+BorrarLista:
+    path: /listas/{id}
+    controller: App\Controller\ListasController::delete_list
+    methods: ['DELETE']
+
+ModificarLista:
+    path: /listas/{id}
+    controller: App\Controller\ListasController::modify_list
+    methods: ['PUT']

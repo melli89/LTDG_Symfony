@@ -1,9 +1,9 @@
 <?php
 namespace App\Controller;
 
-use App\Entity\Ejercito;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Id;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,8 +36,8 @@ class UserController extends AbstractController{
         return new JsonResponse($users, Response::HTTP_OK);
     }
 
-    public function seek_user (EntityManagerInterface $manager, $email):Response{
-        $show_user = $manager -> getRepository(User::class) -> findOneBy(["email"=>$email]);
+    public function seek_user (EntityManagerInterface $manager, $id):Response{
+        $show_user = $manager -> getRepository(User::class) -> find($id);
 
         if (!$show_user){
             return new JsonResponse("", Response::HTTP_BAD_REQUEST);
@@ -59,7 +59,7 @@ class UserController extends AbstractController{
         $data = json_decode($peticion->getContent(), true);
         
 
-        if ($this->checkName($data['email']) && $this->checkIfExists($data['email'],$manager)){
+        if ($this->checkName($data['email']) && $this->checkIfExists($data['email'],$manager, null)){
 
             $user = new User();
             $user->setEmail($data['email']);
@@ -70,6 +70,7 @@ class UserController extends AbstractController{
             $user->setPassword($hashedPassword);
      
             $manager->persist($user);
+            $manager->flush();$manager->persist($user);
             $manager->flush();
 
             return new Response('', Response::HTTP_CREATED);
@@ -85,28 +86,34 @@ class UserController extends AbstractController{
         }
     }
 
-    public function checkIfExists($email,EntityManagerInterface $manager){
+    public function checkIfExists($email,EntityManagerInterface $manager, $id){
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+     
             return false;
         }
         
-        $query = $manager->createQuery("SELECT c.id FROM App\Entity\User c where (c.email=:email)");
-        $query->setParameter('email', $email);
-        $checking = $query->getScalarResult();
-    
-        if(sizeof($checking) !=0){
+        $user = $manager->getRepository(User::class)->findOneBy(["email"=>$email]);
+
+        if($user){
+            if ($id && $user->getId() == $id) {
+               
+                return true;
+            }
+     
             return false;
+            
         }else{
+        
             return true;
         }
     }
 
 
-    public function delete_user($email, EntityManagerInterface $manager): Response {
+    public function delete_user($id, EntityManagerInterface $manager): Response {
         
-        $user = $manager->getRepository(User::class)->findOneBy(["email"=>$email]);
+        $user = $manager->getRepository(User::class)->find($id);
 
-        if (!$email) {
+        if (!$id) {
             return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }else{
             $manager->remove($user);
@@ -119,25 +126,29 @@ class UserController extends AbstractController{
     /**
      * @Route("/{email}", methods={"PUT"}, name="editarUsuario")
      */
-    public function modify_user(UserPasswordHasherInterface $passwordHasher,$email, Request $request, EntityManagerInterface $manager): Response{
+    public function modify_user(UserPasswordHasherInterface $passwordHasher,$id, Request $request, EntityManagerInterface $manager): Response{
 
         $data = json_decode($request->getContent(), true);
-        $user = $manager->getRepository(User::class)->findOneBy(["email"=>$email]);
+        $user = $manager->getRepository(User::class)->find($id);
 
         if (!$user) {
-            return new JsonResponse('', Response::HTTP_NOT_FOUND);
-        }else if (!$this->checkName($email['email'])  && !$this->checkIfExists($data['email'],$manager)){
-            return new JsonResponse('', Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['error'=>'Usuario no encontrado'], Response::HTTP_NOT_FOUND);
+        }else if ($this->checkIfExists($data['email'],$manager,$id)){
+            $user->setEmail($data['email']);
+
+            if ($data['password']) {
+                $hashedPassword = $passwordHasher->hashPassword(
+                    $user,
+                    $data['password']
+                );
+                $user->setPassword($hashedPassword);
+            }
+
+            $manager->flush();
+            return new JsonResponse([], Response::HTTP_OK);
         }
 
-        $user->setEmail($data['email']);
-        $hashedPassword = $passwordHasher->hashPassword(
-            $user,
-            $data['password']
-        );
-        $user->setPassword($hashedPassword);
-        $manager->flush();
-        return new Response('', Response::HTTP_OK);
+        return new JsonResponse(['error'=>'Error al modificar el usuario'], Response::HTTP_BAD_REQUEST);
     }
 
     public function logIn(JWTTokenManagerInterface $JWTManager,UserPasswordHasherInterface $passwordHasher,Request $request, EntityManagerInterface $manager){

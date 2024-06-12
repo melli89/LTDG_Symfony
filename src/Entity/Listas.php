@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ListasRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ListasRepository::class)]
@@ -26,6 +28,17 @@ class Listas
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Ejercito $ejercito = null;
+
+    /**
+     * @var Collection<int, UnidadUsuario>
+     */
+    #[ORM\OneToMany(targetEntity: UnidadUsuario::class, mappedBy: 'listas', orphanRemoval: true)]
+    private Collection $unidades;
+
+    public function __construct()
+    {
+        $this->unidades = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -77,6 +90,36 @@ class Listas
     public function setEjercito(?Ejercito $ejercito): static
     {
         $this->ejercito = $ejercito;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UnidadUsuario>
+     */
+    public function getUnidades(): Collection
+    {
+        return $this->unidades;
+    }
+
+    public function addUnidades(UnidadUsuario $unidades): static
+    {
+        if (!$this->unidades->contains($unidades)) {
+            $this->unidades->add($unidades);
+            $unidades->setListas($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUnidades(UnidadUsuario $unidades): static
+    {
+        if ($this->unidades->removeElement($unidades)) {
+            // set the owning side to null (unless already changed)
+            if ($unidades->getListas() === $this) {
+                $unidades->setListas(null);
+            }
+        }
 
         return $this;
     }

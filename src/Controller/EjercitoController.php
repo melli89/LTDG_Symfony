@@ -37,18 +37,19 @@ class EjercitoController extends AbstractController{
         return 'data:image/jpeg;base64,'.base64_encode(stream_get_contents($armieImg));
     }
 
-    public function seek_army (EntityManagerInterface $manager, $raza):Response{
-        $show_army = $manager -> getRepository(Ejercito::class) -> findOneBy(["raza"=>$raza]);
+    public function seek_army (EntityManagerInterface $manager, $id):JsonResponse{
+        $show_army = $manager -> getRepository(Ejercito::class) -> find($id);
 
         if (!$show_army){
-            return new JsonResponse("", Response::HTTP_BAD_REQUEST);
+            return new JsonResponse([], Response::HTTP_BAD_REQUEST);
         }
 
         $army = [
             'id' => $show_army -> getId(),
             'raza' => $show_army -> getRaza(),
-            'imagen' => $show_army -> getImagen()
+            'imagen' => $this->createImg($show_army -> getImagen())
         ];
+
         return new JsonResponse($army, Response::HTTP_OK);
     }
 
